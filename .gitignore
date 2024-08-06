@@ -1,0 +1,147 @@
+# General
+*.class
+*.dll
+*.exe
+*.lib
+*.pdb
+*.pgd
+*.ppu
+*.rc
+*.res
+*.sbr
+*.tlb
+*.user
+*.vcxproj.filters
+*.vcxproj.user
+
+# Object files
+*.o
+*.obj
+
+# Libraries
+*.lib
+*.a
+*.la
+*.lo
+
+# Shared objects (Linux)
+*.so
+
+# Shared objects (Windows)
+*.dll
+
+# Static files/libraries (Windows)
+*.lib
+*.a
+
+# Compiler cache
+.sass-cache
+.lessc
+.dart_tool/build
+.dart_tool/package_config.json
+
+# vim swap files
+*.swp
+
+# node.js
+/node_modules
+/npm-debug.log
+
+# Ruby
+*.gem
+*.rbc
+/vendor/bundle
+/vendor/cache
+/vendor/gems
+/vendor/ruby
+/build
+
+# Bundler
+/.bundle
+/lib/bundler/man
+/log
+
+# jekyll
+/_site
+/.jekyll-metadata
+/.jekyll-cache
+/Gemfile.lock
+
+# Git
+/.git
+/.gitmodules
+/.gitattributes
+/CHANGELOG.md
+/CONTRIBUTING.md
+/LICENSE.md
+
+
+# Documentation
+/doc
+/docs
+
+# Temp files
+*.bak
+*.swp
+*.tmp
+*.temp
+*.map
+
+# Test coverage files
+/coverage
+
+# Eclipse
+.classpath
+.project
+.cproject
+.launch
+.launches
+*.settings
+*.metadata
+
+# NetBeans
+/nbproject
+/nbbuild
+/dist
+/nbdist
+
+# Xcode
+*.pbxuser
+*.mode1v3
+*.mode2v3
+*.perspectivev3
+*.xccheckout
+*.moved-aside
+*.swp
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Debuggers
+/.vscode/launch.json
+/.vscode/tasks.json
+
+# Debug information
+*.pdb
+*.dbg
+*.dSYM
+*.map
+
+# IntelliJ
+.idea
+*.iml
+*.ipr
+*.iws
+.DS_Store
+
+# Xcode project user settings
+*.xcuserstate
+
+# IntelliJ project files
+*.iml
+*.ipr
+*.iws
+
+# Misc
+.hgignore
+Thumbs.db
