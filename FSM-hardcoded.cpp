@@ -4,106 +4,95 @@
 #include <sstream>
 #include <algorithm>
 
-class FSM {
-private:
-    std::vector<std::string> states;
-    std::vector<char> alphabet;
-    std::map<std::pair<std::string, char>, std::string> transition_function;
-    std::string start_state;
-    std::vector<std::string> accept_states;
-    std::string current_state;
+using namespace std;
 
-public:
-    FSM(std::vector<std::string> states, std::vector<char> alphabet,
-        std::map<std::pair<std::string, char>, std::string> transition_function,
-        std::string start_state, std::vector<std::string> accept_states)
-        : states(states), alphabet(alphabet), transition_function(transition_function),
-          start_state(start_state), accept_states(accept_states), current_state(start_state) {}
+class FSM {
+  private:
+    vector<string> states;
+    vector<char> alphabets;
+    map<pair<string,char>,string> transition_function;
+    string start_state;
+    vector<string> accept_states;
+    string current_state;
+
+  public:
+    FSM(vector<string> states,vector<char> alphabets,map<pair<string,char>,string> transition_function,string start_state,vector<string> accept_states):states(states),alphabets(alphabets),transition_function(transition_function),start_state(start_state),accept_states(accept_states) {}
 
     bool transition(char input_symbol) {
-        auto it = transition_function.find({current_state, input_symbol});
-        if (it == transition_function.end()) {
-            return false;
-        }
-        current_state = it->second;
-        return true;
+      auto it = transition_function.find({current_state,input_symbol});
+      if(it == transition_function.end()) return false;
+      current_state = it->second;
+      return true;
     }
 
-    bool run(const std::string& input_string) {
-        current_state = start_state;
-        for (char symbol : input_string) {
-            if (!transition(symbol)) {
-                return false;
-            }
-        }
-        return std::find(accept_states.begin(), accept_states.end(), current_state) != accept_states.end();
+    bool run(const string& input_string) {
+      current_state = start_state;
+      for(char symbol:input_string){
+        if(!transition(symbol)) return false;
+      }
+      return find(accept_states.begin(),accept_states.end(),current_state) != accept_states.end();
     }
 };
 
-std::vector<std::string> split(const std::string& s, char delimiter) {
-    std::vector<std::string> tokens;
-    std::string token;
-    std::istringstream tokenStream(s);
-    while (std::getline(tokenStream, token, delimiter)) {
-        tokens.push_back(token);
-    }
-    return tokens;
+vector<string> split(const string& s,char delimiter) {
+  vector<string> tokens;
+  string token;
+  istringstream tokenStream(s);
+  while(getline(tokenStream,token,delimiter))
+    tokens.push_back(token);
+  return tokens;
 }
 
 FSM build_fsm() {
-    std::string input;
-    
-    std::cout << "Enter states (comma-separated): ";
-    std::getline(std::cin, input);
-    std::vector<std::string> states = split(input, ',');
+  string input;
 
-    std::cout << "Enter alphabet symbols (comma-separated): ";
-    std::getline(std::cin, input);
-    std::vector<char> alphabet(input.begin(), input.end());
-    alphabet.erase(std::remove(alphabet.begin(), alphabet.end(), ','), alphabet.end());
+  cout<<"Enter states(separated by comma): ";
+  getline(cin,input);
+  vector<string> states = split(input,',');
 
-    std::cout << "Enter start state: ";
-    std::string start_state;
-    std::getline(std::cin, start_state);
+  cout<<"Enter alphabets(separated by comma): ";
+  getline(cin,input);
+  vector<char> alphabet(input.begin(),input.end());
+  alphabet.erase(remove(alphabet.begin(),alphabet.end(),','),alphabet.end());
 
-    std::cout << "Enter accept states (comma-separated): ";
-    std::getline(std::cin, input);
-    std::vector<std::string> accept_states = split(input, ',');
+  cout<<"Enter Start State: ";
+  string start_state;
+  getline(cin,start_state);
 
-    std::map<std::pair<std::string, char>, std::string> transition_function;
-    std::cout << "Enter transition function (format: current_state,input_symbol,next_state):" << std::endl;
-    std::cout << "Enter 'done' when finished." << std::endl;
-    while (true) {
-        std::getline(std::cin, input);
-        if (input == "done") break;
-        
-        auto parts = split(input, ',');
-        if (parts.size() != 3) {
-            std::cout << "Invalid input. Please try again." << std::endl;
-            continue;
-        }
-        transition_function[{parts[0], parts[1][0]}] = parts[2];
+  cout<<"Enter the accept states(seperated by commas): ";
+  getline(cin,input);
+  vector<string> accept_states = split(input,',');
+
+  map<pair<string,char>,string> transition_function;
+  cout<<"Enter transition function(current_state,input_symbol,next_state)"<<endl;
+  cout<<"Enter 'ok' when finished"<<endl;
+  while(true) {
+    getline(cin,input);
+    if(input=="ok") break;
+
+    auto parts = split(input,',');
+    if(parts.size() != 3) {
+      cout<<"Invalid Input"<<endl;
+      continue;
     }
-
-    return FSM(states, alphabet, transition_function, start_state, accept_states);
+    transition_function[{parts[0],parts[1][0]}]=parts[2];
+  }
+  return FSM(states,alphabet,transition_function,start_state,accept_states);
 }
 
-int main() {
-    FSM fsm = build_fsm();
-    
-    std::string input_string;
-    while (true) {
-        std::cout << "Enter an input string (or 'quit' to exit): ";
-        std::getline(std::cin, input_string);
-        
-        if (input_string == "quit") break;
-        
-        if (fsm.run(input_string)) {
-            std::cout << "Accepted" << std::endl;
-        } else {
-            std::cout << "Rejected" << std::endl;
-        }
-    }
+int main()
+{
+  FSM fsm = build_fsm();
+  string input_string;
 
-    return 0;
+  while(true) {
+    cout<<"Enter an Input String('quit' to exit)";
+    getline(cin,input_string);
+
+    if(input_string == "quit")  break;
+
+    if(fsm.run(input_string)) cout<<"Accepted"<<endl;
+    else  cout<<"Rejected"<<endl;
+  }
+  return 0;
 }
