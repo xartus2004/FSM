@@ -1,22 +1,17 @@
-#include <iostream>
-#include <vector>
-#include <map>
-#include <sstream>
-#include <algorithm>
+#include <bits/stdc++.h>
 
 using namespace std;
 
 class FSM {
-  private:
+    public:
     vector<string> states;
     vector<char> alphabets;
     map<pair<string,char>,string> transition_function;
     string start_state;
-    vector<string> accept_states;
+    vector<string> final_states;
     string current_state;
 
-  public:
-    FSM(vector<string> states,vector<char> alphabets,map<pair<string,char>,string> transition_function,string start_state,vector<string> accept_states):states(states),alphabets(alphabets),transition_function(transition_function),start_state(start_state),accept_states(accept_states) {}
+    FSM(vector<string> states,vector<char> alphabets,map<pair<string,char>,string> transition_function,string start_state,vector<string> final_states):states(states),alphabets(alphabets),transition_function(transition_function),start_state(start_state),final_states(final_states) {}
 
     bool transition(char input_symbol) {
       auto it = transition_function.find({current_state,input_symbol});
@@ -30,7 +25,7 @@ class FSM {
       for(char symbol:input_string){
         if(!transition(symbol)) return false;
       }
-      return find(accept_states.begin(),accept_states.end(),current_state) != accept_states.end();
+      return find(final_states.begin(),final_states.end(),current_state) != final_states.end();
     }
 };
 
@@ -46,11 +41,11 @@ vector<string> split(const string& s,char delimiter) {
 FSM build_fsm() {
   string input;
 
-  cout<<"Enter states(separated by comma): ";
+  cout<<"Enter states: ";
   getline(cin,input);
   vector<string> states = split(input,',');
 
-  cout<<"Enter alphabets(separated by comma): ";
+  cout<<"Enter alphabets: ";
   getline(cin,input);
   vector<char> alphabet(input.begin(),input.end());
   alphabet.erase(remove(alphabet.begin(),alphabet.end(),','),alphabet.end());
@@ -59,16 +54,17 @@ FSM build_fsm() {
   string start_state;
   getline(cin,start_state);
 
-  cout<<"Enter the accept states(seperated by commas): ";
+  cout<<"Enter the final states: ";
   getline(cin,input);
-  vector<string> accept_states = split(input,',');
+  vector<string> final_states = split(input,',');
 
   map<pair<string,char>,string> transition_function;
   cout<<"Enter transition function(current_state,input_symbol,next_state)"<<endl;
-  cout<<"Enter 'ok' when finished"<<endl;
+  cout<<"Enter 'done' when finished"<<endl;
+
   while(true) {
     getline(cin,input);
-    if(input=="ok") break;
+    if(input=="done") break;
 
     auto parts = split(input,',');
     if(parts.size() != 3) {
@@ -77,7 +73,7 @@ FSM build_fsm() {
     }
     transition_function[{parts[0],parts[1][0]}]=parts[2];
   }
-  return FSM(states,alphabet,transition_function,start_state,accept_states);
+  return FSM(states,alphabet,transition_function,start_state,final_states);
 }
 
 int main()
@@ -86,7 +82,7 @@ int main()
   string input_string;
 
   while(true) {
-    cout<<"Enter an Input String('quit' to exit)";
+    cout<<"Enter an Input String";
     getline(cin,input_string);
 
     if(input_string == "quit")  break;
