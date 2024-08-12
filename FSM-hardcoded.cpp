@@ -8,10 +8,10 @@ class FSM {
     vector<char> alphabets;
     map<pair<string,char>,string> transition_function;
     string start_state;
-    vector<string> final_states;
+    vector<string> accept_states;
     string current_state;
 
-    FSM(vector<string> states,vector<char> alphabets,map<pair<string,char>,string> transition_function,string start_state,vector<string> final_states):states(states),alphabets(alphabets),transition_function(transition_function),start_state(start_state),final_states(final_states) {}
+    FSM(vector<string> states,vector<char> alphabets,map<pair<string,char>,string> transition_function,string start_state,vector<string> accept_states):states(states),alphabets(alphabets),transition_function(transition_function),start_state(start_state),accept_states(accept_states) {}
 
     bool transition(char input_symbol) {
       auto it = transition_function.find({current_state,input_symbol});
@@ -25,7 +25,7 @@ class FSM {
       for(char symbol:input_string){
         if(!transition(symbol)) return false;
       }
-      return find(final_states.begin(),final_states.end(),current_state) != final_states.end();
+      return find(accept_states.begin(),accept_states.end(),current_state) != accept_states.end();
     }
 };
 
@@ -54,17 +54,17 @@ FSM build_fsm() {
   string start_state;
   getline(cin,start_state);
 
-  cout<<"Enter the final states: ";
+  cout<<"Enter the accept states: ";
   getline(cin,input);
-  vector<string> final_states = split(input,',');
+  vector<string> accept_states = split(input,',');
 
   map<pair<string,char>,string> transition_function;
   cout<<"Enter transition function(current_state,input_symbol,next_state)"<<endl;
-  cout<<"Enter 'done' when finished"<<endl;
+  cout<<"Enter 'ok' when finished"<<endl;
 
   while(true) {
     getline(cin,input);
-    if(input=="done") break;
+    if(input=="ok") break;
 
     auto parts = split(input,',');
     if(parts.size() != 3) {
@@ -73,7 +73,7 @@ FSM build_fsm() {
     }
     transition_function[{parts[0],parts[1][0]}]=parts[2];
   }
-  return FSM(states,alphabet,transition_function,start_state,final_states);
+  return FSM(states,alphabet,transition_function,start_state,accept_states);
 }
 
 int main()
